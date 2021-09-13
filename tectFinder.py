@@ -21,4 +21,6 @@ def passFilter(st):
 
 def main():
 
+	print(read("mseeds/20210825-00-00-00(MKZ).msd"))
+
 main()
