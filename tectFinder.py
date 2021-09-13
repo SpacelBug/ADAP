@@ -1,3 +1,8 @@
+'''*******************************************
+|Скрипт должен выделять тектонические события| 
+|(явл. лишь частью ADAP)                     |
+*******************************************'''
+
 import cmath 
 import time
 from threading import Thread
@@ -76,8 +81,8 @@ def main():
 	for name in stationsNames:
 
 		Thread(target=tect_finder, args=(name,)).start()
-		Thread.join()
-
+		
+	Thread.join()
 	print(len(dictOfTectActs))
 
 main()
