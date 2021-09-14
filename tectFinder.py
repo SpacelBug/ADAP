@@ -81,8 +81,8 @@ def main():
 	for name in stationsNames:
 
 		Thread(target=tect_finder, args=(name,)).start()
-		
-	Thread.join()
+		Thread.join()
+
 	print(len(dictOfTectActs))
 
 main()
