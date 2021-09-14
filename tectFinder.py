@@ -7,6 +7,19 @@ import cmath
 import time
 from threading import Thread
 import os
+import logging 
+
+logger = logging.getLogger("tectFinder.py")
+logger.setLevel(logging.INFO)
+
+# create the logging file handler
+fh = logging.FileHandler(f"logs/tectFinder.log")
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+
+# add handler to logger object
+logger.addHandler(fh)
 
 from obspy import read
 from obspy import Stream
@@ -20,23 +33,23 @@ def pass_filter(st):
 
 	dictOFPassFilterValues={6:[0.75,1.5],7:[1,2],15:[0.1,18],13:[8,16],14:[12,18],}
 	newTr=st[0]
-	newTr.write('newTr.mseed')
 	newSt=Stream().append(newTr)
 	for i in dictOFPassFilterValues:
-		newSt.append(read('newTr.mseed')[0].filter('bandpass', freqmin=dictOFPassFilterValues[i][0], freqmax=dictOFPassFilterValues[i][1]))
+		newSt.append(newTr.copy().filter('bandpass', freqmin=dictOFPassFilterValues[i][0], freqmax=dictOFPassFilterValues[i][1]))
 	return(newSt)
 
 '''******************************
 |Выделение тектонических событий|
 ******************************'''
 def tect_finder(name):
-	st=pass_filter(read(f'mseeds/20210825-00-00-00({name}).msd'))
+	logger.info(f'For thread name = {name}')
 
-	print(os.getpid())
+	st=pass_filter(read(f'mseeds/20210825-00-00-00({name}).msd'))
 
 	ampId=0 # id текущего значения амплитуды
 	ampOldId=-1 # id предыдущего значения амплитуды
 
+	logger.info(f"Start {name} cycle")
 	for amp in st[0].data:
 
 		dictOfTectActs={}
@@ -72,16 +85,26 @@ def tect_finder(name):
 		ampId+=1
 		ampOldId+=1
 
+	logger.info(f"dictOfTectActs lenght = {len(dictOfTectActs)}")
+	logger.info(f"End {name} cycle")
+
 dictOfTectActs={} # Словарик для тектонических событий
 
 def main():
 
-	stationsNames={"BKI":1,"KBG":2,"KBT":3,"KDT":4,"MKZ":5} # Листик для записи потоков
+	logger.info('Prog Started')
+
+	stationsNames={"BKI":0,"KBG":1,"KBT":2,"KDT":3,"MKZ":4} # Листик для записи потоков
+	threads=[] 
 
 	for name in stationsNames:
 
-		Thread(target=tect_finder, args=(name,)).start()
-		Thread.join()
+		threads.append(Thread(target=tect_finder, args=(name,)))
+		logging.info(f'Treads list = {threads}')
+		threads[stationsNames[name]].start()
+
+	for name in stationsNames:
+		threads[stationsNames[name]].join()
 
 	print(len(dictOfTectActs))
 
