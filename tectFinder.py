@@ -13,7 +13,7 @@ logger = logging.getLogger("tectFinder.py")
 logger.setLevel(logging.INFO)
 
 # create the logging file handler
-fh = logging.FileHandler(f"logs/tectFinder.log")
+fh = logging.FileHandler(f"tectFinder.log")
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)
