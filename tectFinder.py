@@ -42,9 +42,11 @@ def pass_filter(st):
 |Выделение тектонических событий|
 ******************************'''
 def tect_finder(name):
-	logger.info(f'For thread name = {name}')
+	logger.info(f'Thread fro station named = {name}')
 
 	st=pass_filter(read(f'mseeds/20210825-00-00-00({name}).msd'))
+
+	listOfTectActs=[] # Словарик для тектонических событий
 
 	ampId=0 # id текущего значения амплитуды
 	ampOldId=-1 # id предыдущего значения амплитуды
@@ -75,22 +77,19 @@ def tect_finder(name):
 
 				if (Fi>0.5):
 
-					timeOfAction=str(st[0].stats.starttime+ampId/st[0].stats.sampling_rate)
-
-					if (dictOfTectActs.get(timeOfAction)==None):
-						dictOfTectActs[timeOfAction]=1
-					else:
-						dictOfTectActs[timeOfAction]+=1
+					listOfTectActs.append(str(st[0].stats.starttime+ampId/st[0].stats.sampling_rate))
 
 		ampId+=1
 		ampOldId+=1
 
-	logger.info(f"dictOfTectActs lenght = {len(dictOfTectActs)}")
+	logger.info(f"Lenght listOfTectActs for {name} = {len(listOfTectActs)}")
 	logger.info(f"End {name} cycle")
 
-dictOfTectActs={} # Словарик для тектонических событий
+	return(listOfTectActs)
 
 def main():
+
+	listOfDict=[]
 
 	logger.info('Prog Started')
 
@@ -99,13 +98,14 @@ def main():
 
 	for name in stationsNames:
 
-		threads.append(Thread(target=tect_finder, args=(name,)))
+		listOfDict.append(threads.append(Thread(target=tect_finder, args=(name,))))
 		logging.info(f'Treads list = {threads}')
 		threads[stationsNames[name]].start()
 
 	for name in stationsNames:
 		threads[stationsNames[name]].join()
 
-	print(len(dictOfTectActs))
+	for dictionary in listOfDict:
+		print(len(dictionary))
 
 main()
