@@ -73,8 +73,11 @@ def ash_finder(name):
 
 				if (Fi>stationsFiRanges[name][0])and(Fi<stationsFiRanges[name][1]):
 
-                    
-					listOfAshActs.append(str(st[0].stats.starttime+ampId/st[0].stats.sampling_rate))
+                    H=dictOfCoefficients[name]*Fi*amp(dictOfI[0]-1)
+
+                    if (H>heightOfVolcanos[name]):
+
+					    listOfAshActs.append(str(st[0].stats.starttime+ampId/st[0].stats.sampling_rate),f' | {H}')
 
 		ampId+=1
 		ampOldId+=1
@@ -90,9 +93,10 @@ def main():
 
 	logger.info('Prog Started')
 
-	stationsNames={"BKI":0,"KBG":1,"KBT":2,"KDT":3,"MKZ":4} # Листик для записи потоков
-    stationsFiRanges={"BKI":[,],"KBG":[,],"KBT":[,],"KDT":[,],"MKZ":[,]} # Хранит диапозоны в которых должен лежать Fi
-    heightOfVolcanos={"BKI":,"KBG":,"KBT":,"KDT":,"MKZ":}
+	stationsNames={"SRK":0} # Листик для записи потоков
+    stationsFiRanges={"SRK":[-1.1,1.333]} # Хранит диапозоны в которых должен лежать Fi
+    heightOfVolcanos={"SRK":3 307} # Высоты вулканов
+    dictOfCoefficients={"SRK":1.333} # Коэфициенты для расета высоты
 
 	threads=[] 
 
