@@ -54,8 +54,6 @@ def tect_finder(name):
 	logger.info(f"Start {name} cycle")
 	for amp in st[0].data:
 
-		dictOfTectActs={}
-
 		dictOfI={0:0,3:0,2:0,1:0,4:0,5:0} # Словарь I где: 3=15 полоса; 2=7 полоса; 1=6 полоса, 4=13 полоса, 5=14 полоса.
 		timeOfAction=0 # Время события
 
@@ -99,7 +97,6 @@ def main():
 	for name in stationsNames:
 
 		listOfDict.append(threads.append(Thread(target=tect_finder, args=(name,))))
-		logging.info(f'Treads list = {threads}')
 		threads[stationsNames[name]].start()
 
 	for name in stationsNames:
