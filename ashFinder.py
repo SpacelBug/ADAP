@@ -42,7 +42,7 @@ def pass_filter(st):
 ******************************'''
 def ash_finder(name):
 
-	st=pass_filter(read(f'mseeds/20210825-00-00-00({name}).msd'))
+	st=pass_filter(read(f'mseedsForTect/20210825-00-00-00({name}).msd'))
 
 	listOfAshActs=[] # Словарик для тектонических событий
 
