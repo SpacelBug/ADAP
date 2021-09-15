@@ -44,7 +44,7 @@ def pass_filter(st):
 def tect_finder(name):
 	logger.info(f'Thread fro station named = {name}')
 
-	st=pass_filter(read(f'mseeds/20210825-00-00-00({name}).msd'))
+	st=pass_filter(read(f'mseedsForTect/20210825-00-00-00({name}).msd'))
 
 	listOfTectActs=[] # Словарик для тектонических событий
 
