@@ -32,10 +32,10 @@ from obspy.core import UTCDateTime
 def pass_filter(st):
 
 	dictOFPassFilterValues={6:[0.75,1.5],7:[1,2],15:[0.1,18],13:[8,16],14:[12,18],}
-	newTr=st[0]
-	newSt=Stream().append(newTr)
+	newTr=st[0] # В новый Trace толкаем первый Trace из входящего потока
+	newSt=Stream().append(newTr) # Его же пристраиваем в новый поток
 	for i in dictOFPassFilterValues:
-		newSt.append(newTr.copy().filter('bandpass', freqmin=dictOFPassFilterValues[i][0], freqmax=dictOFPassFilterValues[i][1]))
+		newSt.append(newTr.copy().filter('bandpass', freqmin=dictOFPassFilterValues[i][0], freqmax=dictOFPassFilterValues[i][1])) # Добавляем в новый поток отфильтрованые частотные полосы.
 	return(newSt)
 
 '''******************************
