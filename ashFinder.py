@@ -43,13 +43,13 @@ def pass_filter(st):
 |Выделение тектонических событий|
 ******************************'''
 
-listOfAshesActs=[] # Словарик для тектонических событий
+
 
 def ash_finder(name, stationsFiRanges, heightOfVolcanos, Coefficient):
 
 	st=pass_filter(read(f'mseedsForAshes/20210825-00-00-00({name}).msd'))
 
-	
+	listOfAshesActs=[] # Словарик для тектонических событий
 
 	ampId=0 # id текущего значения амплитуды
 	ampOldId=-1 # id предыдущего значения амплитуды
@@ -91,7 +91,10 @@ def ash_finder(name, stationsFiRanges, heightOfVolcanos, Coefficient):
 	logger.info(f"Lenght listOfAshActs for {name} = {len(listOfAshesActs)}")
 	logger.info(f"End {name} cycle")
 
-	return(listOfAshesActs)
+	f=open(f'tectActs({name}).txt', 'w+')
+	for act in listOfAshesActs:
+		f.write(f"{act},\n")
+	f.close()
 
 def main():
 
@@ -113,10 +116,5 @@ def main():
 
 	for name in stationsNames:
 		threads[stationsNames[name]].join()
-
-	f=open('ashActions.txt','w+')
-	for line in listOfAshesActs:
-		f.write(f'{line}\n')
-	f.close()
 
 main()
