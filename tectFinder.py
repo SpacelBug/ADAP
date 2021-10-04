@@ -83,15 +83,10 @@ def tect_finder(name):
 	logger.info(f"Lenght listOfTectActs for {name} = {len(listOfTectActs)}")
 	logger.info(f"End {name} cycle")
 
-	listOfDict[name]=(listOfTectActs)
-
 	f=open(f'tectsActions({name}).txt', 'w+')
-	for name in listOfDict:
-		for act in listOfDict[name]:
-			f.write(f"{act},\n")
+	for act in listOfTectActs:
+		f.write(f"{act}, {name}\n")
 	f.close()
-
-listOfDict={}
 
 def main():
 
@@ -107,8 +102,5 @@ def main():
 
 	for name in stationsNames:
 		threads[stationsNames[name]].join()
-
-	for dictionary in listOfDict:
-		print(len(dictionary))
 
 main()
