@@ -9,18 +9,22 @@ def main():
     stationsName={"BKI":0,"KBG":0,"KBT":0,"KDT":0,"MKZ":0} # Названия станций
     dictOfActs={} # Словарь в который будем записывать события и считать совпадения
 
-    '''*****************************************************
-    |Читаем поочередной файлы и записываем время в словарь,|
-    |если оно присутствует, то к значению ключа прибавляем |
-    |единичку.                                             |
-    *****************************************************'''
+    listOfLists=[[],[],[],[],[]]
+    i=0
     for name in stationsName:
-        f=open(f"tectsActions({name}).txt", 'r')
+        f=open(f"tectsActions({name}).txt", "r")
         for line in f:
-            if (dictOfActs.get(line[0:27])==None):
-                dictOfActs[line[0:27]]=1
+            listOfLists[i].append(line[0:27])
+        i+=1
+    
+    i=1
+    for listOfTimes in listOfLists:
+        for time in listOfTimes:
+            if (dictOfActs.get(time)==None):
+                dictOfActs[time]=1
             else:
-                dictOfActs[line[0:27]]+=1
+                dictOfActs[time]=dictOfActs[time]+1
+        i+=1
 
     '''******************************************
     Учитывая кол-во совпадений выписываем все в |
