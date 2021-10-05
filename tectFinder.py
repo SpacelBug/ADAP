@@ -59,23 +59,17 @@ def tect_finder(name):
 
 		counterTect={"BKI":0,"KBG":0,"KBT":0,"KDT":0,"MKZ":0} # Счетчик событий
 
-		if abs(amp)>90:
+		for I in dictOfI:
 
-			for I in dictOfI:
+			if (ampOldId!=-1):
+				if ((amp!=0)and(st[I].data[ampOldId]!=0)):
+					dictOfI[I]=cmath.log(abs(st[I].data[ampOldId])/abs(st[I].data[ampId])).real
+				else:
+					dictOfI[I]=0
 
-				if (ampOldId!=-1):
-					if ((amp!=0)and(st[I].data[ampOldId]!=0)):
-						dictOfI[I]=cmath.log(abs(st[I].data[ampOldId])/abs(st[I].data[ampId])).real
-					else:
-						dictOfI[I]=0
-			
-			if ((dictOfI[3]<0)and(dictOfI[1]<0)and(dictOfI[2]<0)):
+		if ((dictOfI[3]<0)and(dictOfI[1]<0)and(dictOfI[2]<0)):
 
-				Fi=cmath.log10((dictOfI[4]+dictOfI[5])/(dictOfI[1]+dictOfI[2])).real
-
-				if (Fi>0.5):
-
-					listOfTectActs.append(str(st[0].stats.starttime+ampId/st[0].stats.sampling_rate))
+			listOfTectActs.append(str(st[0].stats.starttime+ampId/st[0].stats.sampling_rate))
 
 		ampId+=1
 		ampOldId+=1
